@@ -5,7 +5,7 @@ pipeline {
     agent {
         docker {
             image 'maven:3.9.11-eclipse-temurin-24'
-            args '-v /root/.m2:/root/.m2' // cache Maven local (optionnel mais recommandé)
+            args '-v /root/.m2:/root/.m2' 
         }
     }
     stages {
@@ -22,7 +22,7 @@ pipeline {
     }
     post {
         always {
-            junit 'target/surefire-reports/*.xml'
+            junit '**/target/surefire-reports/*.xml'
         }
     }
 }
