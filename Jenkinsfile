@@ -1,21 +1,27 @@
-pipeline {
-    agent {
-        docker {
+pipeline{
+    triggers {
+        upstream 'build-and-deploy-integration, '
+    }
+    agent{
+        docker{
             image 'maven:3.9.11-eclipse-temurin-24'
         }
     }
-
-    stages {
-        stage("clean and compile") {
-            steps {
-                sh "mvn clean compile"
+    stages{
+        stage('clean and compile'){
+            steps{
+                sh 'mvn clean compile'
             }
         }
-
-        stage("run test") {
-            steps {
-                sh "mvn test"
+        stage('Run Tests'){
+            steps{
+                sh 'mvn test'
             }
+        }
+    }
+    post {
+        always {
+            junit 'target/surefire-reports/*/.xml'
         }
     }
 }
